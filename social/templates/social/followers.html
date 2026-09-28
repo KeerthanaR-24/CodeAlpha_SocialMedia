@@ -1,0 +1,32 @@
+<!DOCTYPE html>
+<html>
+
+<head>
+    <title>Followers</title>
+</head>
+
+<body>
+
+<h1>{{ profile_user.username }}'s Followers</h1>
+
+{% for item in followers %}
+
+    <p>
+        <a href="{% url 'profile' item.follower.username %}">
+            {{ item.follower.username }}
+        </a>
+    </p>
+
+{% empty %}
+
+    <p>No followers yet.</p>
+
+{% endfor %}
+
+<a href="{% url 'profile' profile_user.username %}">
+    Back to Profile
+</a>
+
+</body>
+
+</html>

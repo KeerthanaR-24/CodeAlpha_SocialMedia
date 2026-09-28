@@ -1,0 +1,83 @@
+<!DOCTYPE html>
+<html>
+
+<head>
+    <title>{{ profile_user.username }} - Profile</title>
+</head>
+
+<body>
+
+<h1>{{ profile_user.username }}</h1>
+
+{% if profile.profile_image %}
+
+<img
+    src="{{ profile.profile_image.url }}"
+    width="150"
+    height="150"
+>
+
+{% endif %}
+
+<p>
+    {{ profile.bio }}
+</p>
+
+<p>
+
+<a href="{% url 'followers' profile_user.username %}">
+    Followers
+</a>
+
+|
+
+<a href="{% url 'following' profile_user.username %}">
+    Following
+</a>
+
+</p>
+
+{% if user != profile_user %}
+
+    <a href="{% url 'follow_user' profile_user.username %}">
+        Follow / Unfollow
+    </a>
+
+{% endif %}
+
+<hr>
+
+<h2>Posts</h2>
+
+{% for post in posts %}
+
+    <div>
+
+        <p>{{ post.content }}</p>
+
+        {% if post.image %}
+
+            <img
+                src="{{ post.image.url }}"
+                width="300"
+            >
+
+        {% endif %}
+
+    </div>
+
+    <hr>
+
+{% empty %}
+
+    <p>No posts yet.</p>
+
+{% endfor %}
+
+<a href="{% url 'feed' %}">
+    Back to Feed
+</a>
+
+</body>
+
+</html>

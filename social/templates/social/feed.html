@@ -1,0 +1,143 @@
+<!DOCTYPE html>
+<html>
+
+<head>
+    <title>Social Media</title>
+</head>
+
+<body>
+
+<h1>Social Media Feed</h1>
+
+<p>
+    Welcome, {{ user.username }}
+</p>
+
+<a href="{% url 'profile' user.username %}">
+    My Profile
+</a>
+
+|
+
+<a href="{% url 'create_post' %}">
+    Create Post
+</a>
+
+|
+
+<a href="{% url 'logout' %}">
+    Logout
+</a>
+
+<hr>
+
+{% for post in posts %}
+
+<div>
+
+    <h3>
+        <a href="{% url 'profile' post.user.username %}">
+            {{ post.user.username }}
+        </a>
+    </h3>
+
+    <p>
+        {{ post.content }}
+    </p>
+
+    {% if post.image %}
+
+        <img
+            src="{{ post.image.url }}"
+            width="300"
+        >
+
+    {% endif %}
+
+    <p>
+        {{ post.created_at|date:"d M Y, h:i A" }}
+    </p>
+
+    <!-- Like -->
+
+    <a href="{% url 'like_post' post.id %}">
+        Like / Unlike
+    </a>
+
+    <p>
+        Likes: {{ post.likes.count }}
+    </p>
+
+    <!-- Edit/Delete -->
+
+    {% if post.user == user %}
+
+        <a href="{% url 'edit_post' post.id %}">
+            Edit
+        </a>
+
+        |
+
+        <a href="{% url 'delete_post' post.id %}">
+            Delete
+        </a>
+
+    {% endif %}
+
+    <hr>
+
+    <!-- Comments -->
+
+    <h4>Comments</h4>
+
+    {% for comment in post.comments.all %}
+
+        <p>
+            <strong>
+                {{ comment.user.username }}
+            </strong>:
+
+            {{ comment.text }}
+        </p>
+
+    {% empty %}
+
+        <p>No comments yet.</p>
+
+    {% endfor %}
+
+    <form
+        method="POST"
+        action="{% url 'add_comment' post.id %}"
+    >
+
+        {% csrf_token %}
+
+        <input
+            type="text"
+            name="text"
+            placeholder="Write a comment..."
+            required
+        >
+
+        <button type="submit">
+            Comment
+        </button>
+
+    </form>
+
+</div>
+
+<hr>
+
+{% empty %}
+
+<p>
+    No posts yet. Follow someone or create a post!
+</p>
+
+{% endfor %}
+
+</body>
+
+</html>

@@ -1,0 +1,32 @@
+<!DOCTYPE html>
+<html>
+
+<head>
+    <title>Following</title>
+</head>
+
+<body>
+
+<h1>{{ profile_user.username }} is Following</h1>
+
+{% for item in following %}
+
+    <p>
+        <a href="{% url 'profile' item.following.username %}">
+            {{ item.following.username }}
+        </a>
+    </p>
+
+{% empty %}
+
+    <p>Not following anyone yet.</p>
+
+{% endfor %}
+
+<a href="{% url 'profile' profile_user.username %}">
+    Back to Profile
+</a>
+
+</body>
+
+</html>
